@@ -1,0 +1,36 @@
+.side-bar {
+  h1,
+  h2,
+  h3,
+  h5,
+  p,
+  span,
+  .title {
+    color: var(--bg-white);
+  }
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  .title {
+    display: flex;
+    justify-content: left;
+    width: inherit;
+    font-size: 1.5em;
+    font-weight: bold;
+    padding-left: 10px;
+  }
+  padding: 20px 0px;
+  width: 300px;
+  height: 100vh;
+  background-color: var(--bg-primary);
+  .options {
+    margin: 10px 0px;
+    .menu {
+      cursor: pointer;
+      padding: 5px;
+    }
+    .menu:hover{
+      background: rgba(255,255,255, 0.2);
+    }
+  }
+}
