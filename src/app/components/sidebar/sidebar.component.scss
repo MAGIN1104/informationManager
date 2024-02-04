@@ -4,31 +4,33 @@
   h3,
   h5,
   p,
-  span,
-  .title {
+  span{
     color: var(--bg-white);
   }
   display: flex;
   flex-direction: column;
   position: absolute;
   .title {
+    height: 56px;
+    color: var(--bg-gold);
     display: flex;
-    justify-content: left;
+    justify-content: center;
     width: inherit;
-    font-size: 1.5em;
+    font-size: 1.1em;
     font-weight: bold;
-    padding-left: 10px;
+    padding:10px;
   }
   padding: 20px 0px;
-  width: 300px;
+  width: 270px;
   height: 100vh;
   background-color: var(--bg-primary);
   .options {
     margin: 10px 0px;
     .menu {
       cursor: pointer;
-      padding: 5px;
+      padding: 5px 5px 5px 15px;
     }
+
     .menu:hover{
       background: rgba(255,255,255, 0.2);
     }
