@@ -1,27 +1,34 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router'; // Importar Router
-import { Observable, of } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
+import { AuthService as Auth0Service, User } from '@auth0/auth0-angular';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private router: Router) {} // Inyectar Router
+  constructor(public auth0: Auth0Service, private router: Router) {} // Inyectar Router
 
   login(email: string, password: string): boolean {
-    const fakeToken = 'fake-jwt-token';
-    localStorage.setItem('token', fakeToken);
+    /* const fakeToken = 'fake-jwt-token';
+    localStorage.setItem('token', fakeToken);*/
+    this.auth0.loginWithRedirect();
     return true;
   }
 
   logout(): void {
     localStorage.removeItem('token');
     this.router.navigate(['/login']);
+    this.auth0.logout({ logoutParams: { returnTo: document.location.origin } });
   }
 
   isAuthenticated(): Observable<boolean> {
-    if (!localStorage.getItem('token')) return of(false);
-    return of(true);
+    return this.auth0.isAuthenticated$;
+    /*if (!localStorage.getItem('token')) return of(false);
+    return of(true);*/
   }
 
+  userInfo(): Observable<User | undefined | null> {
+    return this.auth0.user$;
+  }
 }

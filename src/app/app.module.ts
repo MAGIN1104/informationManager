@@ -5,10 +5,22 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { AuthModule } from '@auth0/auth0-angular';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    AuthModule.forRoot({
+      domain: 'rfk.us.auth0.com',
+      clientId: 'mVzeGlJjX8PolCQP6EWvxP9IZA0q9TjO',
+      authorizationParams: {
+        redirect_uri: window.location.origin
+      }
+    }),
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })

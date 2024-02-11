@@ -1,10 +1,13 @@
 <div class="navbar">
-    <div class="profile">
-        <div class="profile-avatar" ></div>
-        <div class="profile-info">
-            <span class="profile-info-user">USER PROFILE</span>
-            <span class="profile-info-role">ADMINISTRADOR</span>
-        </div>
-        <svg (click)="logout()" ><use xlink:href="assets/icons/icons.svg#logout"></use></svg>
+  <div class="profile" *ngIf="auth0.user$ | async as user">
+    <div *ngIf="!user.picture" class="profile-avatar"></div>
+    <img *ngIf="user.picture" src="{{ user.picture }}" alt="" />
+    <div class="profile-info">
+      <span class="profile-info-user">{{ user.name }}</span>
+      <span class="profile-info-role">{{ user.email }}</span>
     </div>
+    <svg (click)="logout()">
+      <use xlink:href="assets/icons/icons.svg#logout"></use>
+    </svg>
+  </div>
 </div>
