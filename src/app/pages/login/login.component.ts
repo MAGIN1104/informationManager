@@ -10,12 +10,10 @@ import { AuthService } from 'src/app/services/auth.service';
 export class LoginComponent {
   constructor(private authService: AuthService, private router: Router) {}
   login() {
-    console.log('LOGIN');
-    this.authService.login('user@example.com', 'password');
+    this.authService.login();
     this.router.navigate(['/admin/users']);
   }
   logout() {
     this.authService.logout();
-    // Redirigir al usuario o actualizar el estado de la UI
   }
 }

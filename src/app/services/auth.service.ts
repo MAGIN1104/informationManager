@@ -9,7 +9,7 @@ import { AuthService as Auth0Service, User } from '@auth0/auth0-angular';
 export class AuthService {
   constructor(public auth0: Auth0Service, private router: Router) {} // Inyectar Router
 
-  login(email: string, password: string): boolean {
+  login(): boolean {
     /* const fakeToken = 'fake-jwt-token';
     localStorage.setItem('token', fakeToken);*/
     this.auth0.loginWithRedirect();
@@ -18,7 +18,6 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem('token');
-    this.router.navigate(['/login']);
     this.auth0.logout({ logoutParams: { returnTo: document.location.origin } });
   }
 
