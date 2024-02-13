@@ -1,0 +1,17 @@
+h1,
+h2,
+h3 {
+  color: var(--bg-primary);
+}
+.title{
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.form-user{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 10px;
+}

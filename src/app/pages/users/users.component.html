@@ -1,0 +1,122 @@
+<div class="container">
+  <div class="title"><h1>Gestión de Usuarios</h1></div>
+  <app-button [data]="dataButton" (click)="openModal()"></app-button>
+
+  <table
+    *ngIf="users$ | async as dataSource"
+    mat-table
+    [dataSource]="users"
+    class="mat-elevation-z8"
+  >
+    <!-- Position Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>NOMBRE</th>
+      <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="firstLastName">
+      <th mat-header-cell *matHeaderCellDef>APELLIDO PATERNO</th>
+      <td mat-cell *matCellDef="let element">{{ element.firstLastName }}</td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="secondLastName">
+      <th mat-header-cell *matHeaderCellDef>APELLIDO MATERNO</th>
+      <td mat-cell *matCellDef="let element">{{ element.secondLastName }}</td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="birthDate">
+      <th mat-header-cell *matHeaderCellDef>FECHA DE NACIMIENTO</th>
+      <td mat-cell *matCellDef="let element">{{ element.birthDate }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</div>
+
+<app-modal #modalUser [title]="'CREAR USUARIO'">
+  <div modal-body class="form-user" [formGroup]="userForm">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="name" />
+      <mat-error *ngIf="userForm.controls['name'].hasError('required')">
+        El campo es requerido.
+      </mat-error>
+      <mat-error *ngIf="userForm.controls['name'].hasError('minlength')">
+        El nombre debe tener mas de 2 caracteres
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Apellido Paterneo</mat-label>
+      <input matInput formControlName="firstLastName" />
+      <mat-error
+        *ngIf="userForm.controls['firstLastName'].hasError('required')"
+      >
+        El campo es requerido.
+      </mat-error>
+      <mat-error
+        *ngIf="userForm.controls['firstLastName'].hasError('minlength')"
+      >
+        El apellido paterno debe tener mas de 2 carateres
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Apellido Materno</mat-label>
+      <input matInput formControlName="secondLastName" />
+      <mat-error
+        *ngIf="userForm.controls['secondLastName'].hasError('required')"
+      >
+        El campo es requerido.
+      </mat-error>
+      <mat-error
+        *ngIf="userForm.controls['secondLastName'].hasError('minlength')"
+      >
+        El apellido Materno debe tener mas de 2 carateres
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Correo electrónico</mat-label>
+      <input matInput formControlName="email" />
+      <mat-error *ngIf="userForm.controls['email'].hasError('required')">
+        Email is required.
+      </mat-error>
+      <mat-error *ngIf="userForm.controls['email'].hasError('email')">
+        Porfavor ingrese un correo valido
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Edad</mat-label>
+      <input matInput type="number" formControlName="age" />
+      <mat-error *ngIf="userForm.controls['age'].hasError('required')">
+        El campo es requerido
+      </mat-error>
+    </mat-form-field>
+
+    <mat-checkbox formControlName="married" class="full-width"
+      >Casado</mat-checkbox
+    >
+    <mat-error *ngIf="userForm.controls['married'].hasError('required')">
+      El campo es requerido.
+    </mat-error>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Dirección domicilio</mat-label>
+      <input matInput formControlName="address" />
+      <mat-error *ngIf="userForm.controls['address'].hasError('required')">
+        El campo es requerido.
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <app-button
+    modal-footer
+    [data]="buttonSave"
+    (click)="onSubmit()"
+  ></app-button>
+</app-modal>

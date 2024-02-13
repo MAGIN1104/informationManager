@@ -1,0 +1,21 @@
+/* You can add global styles to this file, and also import other style files */
+
+/*Bootstrap*/
+@import "~bootstrap/dist/css/bootstrap.min.css";
+
+/*Reset style*/
+@import "./assets/scss/reset.scss";
+
+/*Background*/
+@import url("./assets/scss/colors.scss");
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+/*Scroll*/
+@import url("./assets/scss/custom/scroll.scss");
