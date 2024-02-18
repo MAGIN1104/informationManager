@@ -11,7 +11,6 @@ export interface UserResponse {
   address: string;
 }
 
-
 export interface User {
   id: string;
   name: string;
@@ -23,7 +22,8 @@ export interface User {
   address: string;
 }
 
-export interface UserSave{
+export interface UserSave {
+  id?: string;
   name: string;
   firstLastName: string;
   secondLastName: string;

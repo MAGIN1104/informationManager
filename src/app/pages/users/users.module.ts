@@ -9,6 +9,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatIconModule } from '@angular/material/icon';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenInterceptor } from 'src/app/services/tocken.interceptor';
 const routes: Routes = [
   {
     path: '',
@@ -25,7 +28,11 @@ const routes: Routes = [
     MatInputModule,
     MatFormFieldModule,
     MatCheckboxModule,
-    MatTableModule
+    MatTableModule,
+    MatIconModule,
+  ],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
   ],
 })
 export class UsersModule {}
