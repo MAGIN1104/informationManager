@@ -14,9 +14,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { TokenInterceptor } from './services/tocken.interceptor';
-
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -39,7 +36,6 @@ import { TokenInterceptor } from './services/tocken.interceptor';
     provideFirestore(() => getFirestore()),
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
 })

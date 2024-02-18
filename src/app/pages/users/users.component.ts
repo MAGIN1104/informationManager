@@ -1,7 +1,4 @@
-import {
-  Component,
-  ViewChild,
-} from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Timestamp } from 'firebase/firestore';
 import { Observable, map, pipe, take, tap } from 'rxjs';
@@ -32,15 +29,22 @@ export class UsersComponent {
     label: 'Guardar Usuario',
     size: Size.Medium,
   };
+  buttonUpdate: Button = {
+    label: 'Guardar Usuario',
+    size: Size.Medium,
+  };
   users: User[] = [];
+  userId?: string;
   displayedColumns: string[] = [
     'name',
     'firstLastName',
     'secondLastName',
     'birthDate',
+    'actions',
   ];
 
   userForm!: FormGroup;
+  isEdit: boolean = false;
 
   constructor(
     private usersService: UsersService,
@@ -64,8 +68,15 @@ export class UsersComponent {
     });
   }
 
-  openModal() {
-    this.modal.show(); // Ahora abre el modal llamando al método `open`
+  openModal(data?: UserResponse) {
+    this.modal.show();
+    if (data) {
+      this.userId = data.id;
+      this.userForm.patchValue(data!);
+    } else {
+      this.userForm.reset();
+      this.userForm.patchValue({ married: false });
+    }
   }
 
   closeModal() {
@@ -75,7 +86,6 @@ export class UsersComponent {
   loadUsers() {
     this.users$ = this.usersService.getUsers().pipe(
       tap((users) => {
-        console.log('FIREBASE USERS=====>', this.users);
         this.users = users.map((user) => ({
           ...user,
           birthDate: this.convertTimestampToDateStr(user.birthDate),
@@ -91,30 +101,63 @@ export class UsersComponent {
     const year: string = date.getFullYear().toString();
     return `${day}/${month}/${year}`;
   }
+
   convertDateToTimestamp(date: Date): Timestamp {
     return Timestamp.fromDate(date);
   }
 
   onSubmit() {
     if (this.userForm.valid) {
-      console.log('Form Data: ', this.userForm.value);
-      const newUser: UserSave = {
-        ...this.userForm.value,
-        birthDate: this.convertDateToTimestamp(new Date()),
-      };
-
-      this.usersService
-        .postUser(newUser)
-        .then(() => {
-          console.log('Usuario añadido con éxito');
-          this.closeModal();
-        })
-        .catch((error) => {
-          console.error('Error al añadir usuario:', error);
-        });
+      !this.userId ? this.save() : this.update(this.userId);
     } else {
       this.userForm.markAllAsTouched();
       console.log('Form is not valid');
     }
+  }
+
+  save() {
+    const newUser: UserSave = {
+      ...this.userForm.value,
+      birthDate: this.convertDateToTimestamp(new Date()),
+    };
+
+    this.usersService
+      .postUser(newUser)
+      .then(() => {
+        console.log('Usuario añadido con éxito');
+        this.closeModal();
+      })
+      .catch((error) => {
+        console.error('Error al añadir usuario:', error);
+      });
+  }
+
+  update(idUser: string) {
+    const newUser: UserSave = {
+      ...this.userForm.value,
+      birthDate: this.convertDateToTimestamp(new Date()),
+      id: idUser,
+    };
+    console.log("ACTUALIZAR USUARIO: ",newUser)
+    this.usersService
+      .updateUser(newUser)
+      .then(() => {
+        console.log('Usuario actualizado con éxito');
+        this.closeModal();
+      })
+      .catch((error) => {
+        console.error('Error al actualizar usuario:', error);
+      });
+    
+  }
+  delete(data?: UserResponse){
+    this.usersService
+    .deleteUser(data!)
+    .then(() => {
+      console.log('Usuario eliminado con éxito');
+    })
+    .catch((error) => {
+      console.error('Error al eliminar usuario:', error);
+    });
   }
 }
