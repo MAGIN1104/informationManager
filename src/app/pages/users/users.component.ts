@@ -1,7 +1,13 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  MatDialog,
+  MatDialogConfig,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { Timestamp } from 'firebase/firestore';
-import { Observable, map, pipe, take, tap } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
+import { Observable, config, map, pipe, take, tap } from 'rxjs';
 import { ModalComponent } from 'src/app/components/modal/modal.component';
 import { Size } from 'src/app/enums/button.enum';
 import {
@@ -18,8 +24,9 @@ import { UsersService } from 'src/app/services/users.service';
   styleUrls: ['./users.component.scss'],
 })
 export class UsersComponent {
-  @ViewChild('modalUser') modal!: ModalComponent;
-
+  @ViewChild(ModalComponent) modalComponent!: ModalComponent;
+  @ViewChild('bodyContent') bodyModalTemplate!: TemplateRef<any>;
+  @ViewChild('footerContent') footerModalTemplate!: TemplateRef<any>;
   users$: Observable<UserResponse[]> | undefined;
   dataButton: Button = {
     icon: 'users',
@@ -46,9 +53,13 @@ export class UsersComponent {
   userForm!: FormGroup;
   isEdit: boolean = false;
 
+  dialogRef?: MatDialogRef<ModalComponent, any>;
+
   constructor(
     private usersService: UsersService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private toastr: ToastrService,
+    private dialog: MatDialog
   ) {
     this.form();
   }
@@ -63,26 +74,52 @@ export class UsersComponent {
       secondLastName: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.email]],
       age: ['', [Validators.required]],
+      birthDate: ['', [Validators.required]],
       married: [false, [Validators.required]],
       address: ['', [Validators.required]],
     });
   }
+  convertStringToDate(dateString: string): Date {
+    const parts = dateString.split('/');
+    const day = parseInt(parts[0], 10);
+    const month = parseInt(parts[1], 10) - 1;
+    const year = parseInt(parts[2], 10);
 
+    return new Date(year, month, day);
+  }
   openModal(data?: UserResponse) {
-    this.modal.show();
     if (data) {
       this.userId = data.id;
       this.userForm.patchValue(data!);
+      const newDate = this.userForm.get('birthDate')?.value;
+      this.userForm
+        .get('birthDate')
+        ?.setValue(this.convertStringToDate(newDate));
     } else {
       this.userForm.reset();
       this.userForm.patchValue({ married: false });
     }
+
+    const config = {
+      titleModal: data?.id ? 'ACTUALIZAR USUARIO' : 'REGISTRAR NUEVO USUARIO',
+      templateBody: this.bodyModalTemplate,
+      templateFooter: this.footerModalTemplate,
+    };
+    console.log(config);
+    this.dialogRef = this.dialog.open(ModalComponent, {
+      width: '480px',
+      height: '500px',
+      data: config,
+    });
+
+    this.dialogRef.afterClosed().subscribe((result) => {
+      console.log('MODAL CERRADO');
+    });
   }
 
   closeModal() {
-    this.modal.hide();
+    this.dialogRef!.close();
   }
-
   loadUsers() {
     this.users$ = this.usersService.getUsers().pipe(
       tap((users) => {
@@ -107,57 +144,67 @@ export class UsersComponent {
   }
 
   onSubmit() {
-    if (this.userForm.valid) {
-      !this.userId ? this.save() : this.update(this.userId);
-    } else {
+    if (this.userForm.invalid) {
       this.userForm.markAllAsTouched();
       console.log('Form is not valid');
     }
+    !this.userId ? this.save() : this.update(this.userId);
   }
 
   save() {
     const newUser: UserSave = {
       ...this.userForm.value,
-      birthDate: this.convertDateToTimestamp(new Date()),
     };
 
     this.usersService
       .postUser(newUser)
       .then(() => {
+        this.alertSucces('CREADO', 'Usuario creado correctamente');
         console.log('Usuario añadido con éxito');
         this.closeModal();
       })
       .catch((error) => {
+        this.alertError('Error', 'No se creo el usuario');
         console.error('Error al añadir usuario:', error);
       });
+  }
+
+  alertSucces(titel: string, subTitle: string) {
+    this.toastr.success(subTitle, titel);
+  }
+  alertError(titel: string, subTitle: string) {
+    this.toastr.error(subTitle, titel);
   }
 
   update(idUser: string) {
     const newUser: UserSave = {
       ...this.userForm.value,
-      birthDate: this.convertDateToTimestamp(new Date()),
       id: idUser,
     };
-    console.log("ACTUALIZAR USUARIO: ",newUser)
+    console.log('ACTUALIZAR USUARIO: ', newUser);
     this.usersService
       .updateUser(newUser)
       .then(() => {
         console.log('Usuario actualizado con éxito');
         this.closeModal();
+        this.alertSucces('ACTUALIZADO', 'Usuario actualizado correctamente');
       })
       .catch((error) => {
+        this.alertError('ERROR', 'Error al actualizar usuario');
         console.error('Error al actualizar usuario:', error);
       });
-    
   }
-  delete(data?: UserResponse){
+
+  delete(data?: UserResponse) {
     this.usersService
-    .deleteUser(data!)
-    .then(() => {
-      console.log('Usuario eliminado con éxito');
-    })
-    .catch((error) => {
-      console.error('Error al eliminar usuario:', error);
-    });
+      .deleteUser(data!)
+      .then(() => {
+        this.alertSucces('ELIMINADO', 'Usuario eliminado correctamente');
+        console.log('Usuario eliminado con éxito');
+      })
+      .catch((error) => {
+        this.alertError('ERROR', 'Error al eliminar usuario');
+        console.error('Error al eliminar usuario:', error);
+      });
   }
 }

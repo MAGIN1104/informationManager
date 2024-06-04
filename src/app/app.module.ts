@@ -14,6 +14,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenInterceptor } from './services/tocken.interceptor';
+import { ToastrModule } from 'ngx-toastr';
+import { MatDialogModule } from '@angular/material/dialog';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -24,6 +28,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatInputModule,
     MatFormFieldModule,
     MatCheckboxModule,
+    BrowserAnimationsModule,
+    MatDialogModule,
+    ToastrModule.forRoot(), // ToastrModule added
     AuthModule.forRoot({
       domain: 'rfk.us.auth0.com',
       clientId: 'mVzeGlJjX8PolCQP6EWvxP9IZA0q9TjO',
@@ -36,6 +43,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     provideFirestore(() => getFirestore()),
   ],
   providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
 })
