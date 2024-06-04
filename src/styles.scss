@@ -3,8 +3,10 @@
 /*Bootstrap*/
 @import "~bootstrap/dist/css/bootstrap.min.css";
 
+
 /*Reset style*/
 @import "./assets/scss/reset.scss";
+@import 'bootstrap/scss/bootstrap';
 
 /*Background*/
 @import url("./assets/scss/colors.scss");
@@ -19,3 +21,14 @@ body {
 
 /*Scroll*/
 @import url("./assets/scss/custom/scroll.scss");
+
+/* TOAST */
+// regular style toast
+@import url("./assets/scss/toast/toastr.css");
+// boostrap 5
+@import 'ngx-toastr/toastr-bs5-alert';
+
+/*DATE POCKER*/
+::ng-deep .mat-datepicker-panel {
+  z-index: 99999 !important; /* Ajusta este valor según sea necesario */
+}

@@ -1,5 +1,6 @@
-import { Component, Input } from '@angular/core';
-import { Modal } from 'src/app/interfaces/Modal.interface';
+import { Component, Inject, Input } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { config } from 'rxjs';
 
 @Component({
   selector: 'app-modal',
@@ -7,20 +8,14 @@ import { Modal } from 'src/app/interfaces/Modal.interface';
   styleUrls: ['./modal.component.scss'],
 })
 export class ModalComponent {
-
-  @Input() title!: string;
-
-  isVisible = false;
-
-  show() {
-    this.isVisible = true;
+  constructor(  
+    public dialogRef: MatDialogRef<ModalComponent>,
+    @Inject(MAT_DIALOG_DATA) public config: any // Acceder a los datos proporcionados
+  ) {
+    console.log("INJECT: ",config)
   }
 
-  hide() {
-    this.isVisible = false;
-  }
-
-  onSubmit(){
-
+  closeModal(): void {
+    this.dialogRef.close();
   }
 }
