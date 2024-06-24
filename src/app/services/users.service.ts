@@ -32,7 +32,7 @@ export class UsersService {
     console.log('USUARIO ENCONTRADO', userDocRef);
     await updateDoc(userDocRef, user); // Actualizar el documento con los nuevos datos
   }
-  
+
   async deleteUser(user: Partial<UserSave>): Promise<void> {
     const userDocRef = doc(this.firestore, 'user', user.id!); // Referencia al documento del usuario
     await deleteDoc(userDocRef); // Actualizar el documento con los nuevos datos

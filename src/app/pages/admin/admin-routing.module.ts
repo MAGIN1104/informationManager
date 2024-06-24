@@ -7,11 +7,16 @@ const routes: Routes = [
     path: '',
     component: AdminComponent,
     children: [
-      { path: '', redirectTo: 'users', pathMatch: 'full' },
+      { path: '', redirectTo: 'groups', pathMatch: 'full' },
       {
         path: 'users',
         loadChildren: () =>
           import('../users/users.module').then((m) => m.UsersModule),
+      },
+      {
+        path: 'groups',
+        loadChildren: () =>
+          import('../groups/groups.module').then((m) => m.GroupsModule),
       },
     ],
   },
