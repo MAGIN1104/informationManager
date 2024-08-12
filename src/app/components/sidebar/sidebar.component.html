@@ -4,9 +4,14 @@
     <span>MANAGER</span>
   </div>
   <div class="options">
-    <div class="menu selected">
+    <div
+      *ngFor="let menu of listMenu; let i = index"
+      class="menu"
+      [ngClass]="{ 'selected': _router.url === menu.route }"
+      (click)="navigateTo(menu.route)"
+    >
       <svg><use xlink:href="assets/icons/icons.svg#users"></use></svg>
-      <span>Gestión de Usuarios</span>
+      <span>{{ menu.title }}</span>
     </div>
   </div>
 </div>
