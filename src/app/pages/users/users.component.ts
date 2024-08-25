@@ -157,7 +157,7 @@ export class UsersComponent {
     };
 
     this.usersService
-      .postUser(newUser)
+      .addUser(newUser)
       .then(() => {
         this.alertSucces('CREADO', 'Usuario creado correctamente');
         console.log('Usuario añadido con éxito');
