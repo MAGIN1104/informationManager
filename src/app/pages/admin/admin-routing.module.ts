@@ -7,7 +7,7 @@ const routes: Routes = [
     path: '',
     component: AdminComponent,
     children: [
-      { path: '', redirectTo: 'users', pathMatch: 'full' },
+      { path: '', redirectTo: 'groups', pathMatch: 'full' },
       {
         path: 'users',
         loadChildren: () =>
