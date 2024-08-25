@@ -54,8 +54,9 @@
 
 <ng-template #bodyContent>
   <div class="form-user" [formGroup]="userForm">
+    <!-- NOMBRES -->
     <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Nombre</mat-label>
+      <mat-label>Nombre(s)</mat-label>
       <input matInput formControlName="name" />
       <mat-error *ngIf="userForm.controls['name'].hasError('required')">
         El campo es requerido.
@@ -64,17 +65,8 @@
         El nombre debe tener mas de 2 caracteres
       </mat-error>
     </mat-form-field>
-    
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Fecha de nacimiento</mat-label>
-      <input matInput [matDatepicker]="picker" formControlName="birthDate" />
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-      <mat-error *ngIf="userForm.controls['birthDate'].hasError('required')">
-        La fecha de nacimiento es requerida.
-      </mat-error>
-    </mat-form-field>
-    
+
+    <!-- APELLIDO PATERNO -->
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Apellido Paterneo</mat-label>
       <input matInput formControlName="firstLastName" />
@@ -90,6 +82,7 @@
       </mat-error>
     </mat-form-field>
 
+    <!-- APELLIDO MATERNO -->
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Apellido Materno</mat-label>
       <input matInput formControlName="secondLastName" />
@@ -105,6 +98,18 @@
       </mat-error>
     </mat-form-field>
 
+    <!-- FECHA NACIMIENTO -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Fecha de nacimiento</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="birthDate" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="userForm.controls['birthDate'].hasError('required')">
+        La fecha de nacimiento es requerida.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- CORREO ELECTRONICO -->
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Correo electrónico</mat-label>
       <input matInput formControlName="email" />
@@ -116,21 +121,14 @@
       </mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Edad</mat-label>
-      <input matInput type="number" formControlName="age" />
-      <mat-error *ngIf="userForm.controls['age'].hasError('required')">
-        El campo es requerido
-      </mat-error>
-    </mat-form-field>
+    <!-- CASADO -->
+    <span class="mb-4">
+      <mat-checkbox formControlName="married" class="full-width"
+        >Casado</mat-checkbox
+      >
+    </span>
 
-    <mat-checkbox formControlName="married" class="full-width"
-      >Casado</mat-checkbox
-    >
-    <mat-error *ngIf="userForm.controls['married'].hasError('required')">
-      El campo es requerido.
-    </mat-error>
-
+    <!-- DIRECCION DOMICILIO -->
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Dirección domicilio</mat-label>
       <input matInput formControlName="address" />

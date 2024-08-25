@@ -1,20 +1,28 @@
 import { Injectable } from '@angular/core';
 import {
-  Firestore,
-  collectionData,
-} from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
-import { collection } from 'firebase/firestore';
-@Injectable({
-  providedIn: 'root',
-})
-export class GroupsService {
-  constructor(private firestore: Firestore) {}
+  AngularFirestore,
+  AngularFirestoreCollection,
+} from '@angular/fire/compat/firestore';
+import { map, Observable } from 'rxjs';
+import { Group } from '../interfaces/Groups.interface';
 
-  getGroups(): Observable<any> {
-    const groupsCollection = collection(this.firestore, 'groups');
-    return collectionData(groupsCollection, {
-      idField: 'id',
-    }) as Observable<any>;
+@Injectable({ providedIn: 'root' })
+export class GroupsService {
+  private groupsCollection: AngularFirestoreCollection<any>;
+
+  constructor(private afs: AngularFirestore) {
+    this.groupsCollection = afs.collection<any>('groups');
+  }
+
+  getGroups(): Observable<Group[]> {
+    return this.groupsCollection.snapshotChanges().pipe(
+      map((actions) =>
+        actions.map((a) => {
+          const data = a.payload.doc.data();
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        })
+      )
+    );
   }
 }

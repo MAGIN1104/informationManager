@@ -1,6 +1,5 @@
-import { UserResponse } from "./User.interface";
-
 export interface Group {
-    title:string;
-    users: UserResponse[]
+  id: string;
+  title: string;
+  description: string;
 }

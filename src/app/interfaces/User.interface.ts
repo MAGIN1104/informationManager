@@ -31,4 +31,5 @@ export interface UserSave {
   birthDate: Timestamp;
   married: boolean;
   address: string;
+  idGroup:string;
 }
