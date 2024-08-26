@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { GroupsComponent } from './groups.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from 'src/app/services/tocken.interceptor';
+import { MatCardModule } from '@angular/material/card';
 
 const routes: Routes = [
   {
@@ -16,6 +17,7 @@ const routes: Routes = [
   declarations: [GroupsComponent],
   imports: [
     CommonModule,
+    MatCardModule,
     RouterModule.forChild(routes),
   ],
   providers: [

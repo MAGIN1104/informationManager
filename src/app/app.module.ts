@@ -16,6 +16,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './services/tocken.interceptor';
 import { ToastrModule } from 'ngx-toastr';
 import { MatDialogModule } from '@angular/material/dialog';
+
 import { environment } from 'src/environment/environment';
 @NgModule({
   declarations: [AppComponent],
@@ -29,17 +30,17 @@ import { environment } from 'src/environment/environment';
     MatCheckboxModule,
     BrowserAnimationsModule,
     MatDialogModule,
-    ToastrModule.forRoot(), // ToastrModule added
+    ToastrModule.forRoot(),
     AuthModule.forRoot({
-      domain: 'rfk.us.auth0.com',
-      clientId: 'mVzeGlJjX8PolCQP6EWvxP9IZA0q9TjO',
+      domain: environment.authConfig.domain,
+      clientId: environment.authConfig.clientId,
       authorizationParams: {
         redirect_uri: window.location.origin,
       },
       useRefreshTokens: false,
     }),
     AngularFireModule.initializeApp(environment.firebaseConfig),
-    AngularFirestoreModule
+    AngularFirestoreModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },

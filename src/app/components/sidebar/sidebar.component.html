@@ -7,15 +7,11 @@
     <div
       *ngFor="let menu of listMenu; let i = index"
       class="menu"
-      [ngClass]="{ 'selected': _router.url === menu.route }"
+      [ngClass]="{ selected: _router.url === menu.route }"
       (click)="navigateTo(menu.route)"
     >
       <svg><use xlink:href="assets/icons/icons.svg#users"></use></svg>
       <span>{{ menu.title }}</span>
-    </div>
-    <div class="menu">
-      <svg><use xlink:href="assets/icons/icons.svg#users"></use></svg>
-      <span>Grupos</span>
     </div>
   </div>
 </div>
