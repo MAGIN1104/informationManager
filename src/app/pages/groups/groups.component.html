@@ -1,0 +1,8 @@
+<div *ngIf="groups$ | async as groups" class="cards-container" style="padding: 1em;">
+  <mat-card *ngFor="let group of groups" appearance="outlined" class="card" appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>{{ group.title }}</mat-card-title>
+      <mat-card-subtitle>{{ group.description }}</mat-card-subtitle>
+    </mat-card-header>
+  </mat-card>
+</div>

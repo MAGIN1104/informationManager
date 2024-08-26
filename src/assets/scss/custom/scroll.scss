@@ -1,0 +1,25 @@
+/* Para navegadores basados en WebKit (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+    width: 12px; /* Ancho del scrollbar */
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Color de fondo del track */
+    border-radius: 10px; /* Bordes redondeados del track */
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #888; /* Color del thumb (la barra que desplazas) */
+    border-radius: 10px !important; /* Bordes redondeados del thumb */
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Color del thumb al pasar el mouse */
+  }
+  
+  /* Para Firefox */
+  * {
+    scrollbar-width: thin; /* Ancho del scrollbar en Firefox */
+    scrollbar-color: #888 #f1f1f1; /* Color del thumb y del track en Firefox */
+  }
+  

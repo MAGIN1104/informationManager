@@ -1,0 +1,148 @@
+<div class="container">
+  <div class="title"><h1>Gestión de Usuarios</h1></div>
+
+  <div class="header_body">
+    <div></div>
+    <app-button
+      [data]="dataButton"
+      (click)="openModal(); isEdit = false"
+    ></app-button>
+  </div>
+
+  <table
+    *ngIf="users$ | async as dataSource"
+    mat-table
+    [dataSource]="users"
+    class="mat-elevation-z8 centered-table"
+  >
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>NOMBRE</th>
+      <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="firstLastName">
+      <th mat-header-cell *matHeaderCellDef>APELLIDO PATERNO</th>
+      <td mat-cell *matCellDef="let element">{{ element.firstLastName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="secondLastName">
+      <th mat-header-cell *matHeaderCellDef>APELLIDO MATERNO</th>
+      <td mat-cell *matCellDef="let element">{{ element.secondLastName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="birthDate">
+      <th mat-header-cell *matHeaderCellDef>FECHA DE NACIMIENTO</th>
+      <td mat-cell *matCellDef="let element">{{ element.birthDate }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button (click)="openModal(element); isEdit = true">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button (click)="delete(element)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</div>
+
+<ng-template #bodyContent>
+  <div class="form-user" [formGroup]="userForm">
+    <!-- NOMBRES -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Nombre(s)</mat-label>
+      <input matInput formControlName="name" />
+      <mat-error *ngIf="userForm.controls['name'].hasError('required')">
+        El campo es requerido.
+      </mat-error>
+      <mat-error *ngIf="userForm.controls['name'].hasError('minlength')">
+        El nombre debe tener mas de 2 caracteres
+      </mat-error>
+    </mat-form-field>
+
+    <!-- APELLIDO PATERNO -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Apellido Paterneo</mat-label>
+      <input matInput formControlName="firstLastName" />
+      <mat-error
+        *ngIf="userForm.controls['firstLastName'].hasError('required')"
+      >
+        El campo es requerido.
+      </mat-error>
+      <mat-error
+        *ngIf="userForm.controls['firstLastName'].hasError('minlength')"
+      >
+        El apellido paterno debe tener mas de 2 carateres
+      </mat-error>
+    </mat-form-field>
+
+    <!-- APELLIDO MATERNO -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Apellido Materno</mat-label>
+      <input matInput formControlName="secondLastName" />
+      <mat-error
+        *ngIf="userForm.controls['secondLastName'].hasError('required')"
+      >
+        El campo es requerido.
+      </mat-error>
+      <mat-error
+        *ngIf="userForm.controls['secondLastName'].hasError('minlength')"
+      >
+        El apellido Materno debe tener mas de 2 carateres
+      </mat-error>
+    </mat-form-field>
+
+    <!-- FECHA NACIMIENTO -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Fecha de nacimiento</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="birthDate" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="userForm.controls['birthDate'].hasError('required')">
+        La fecha de nacimiento es requerida.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- CORREO ELECTRONICO -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Correo electrónico</mat-label>
+      <input matInput formControlName="email" />
+      <mat-error *ngIf="userForm.controls['email'].hasError('required')">
+        Email is required.
+      </mat-error>
+      <mat-error *ngIf="userForm.controls['email'].hasError('email')">
+        Porfavor ingrese un correo valido
+      </mat-error>
+    </mat-form-field>
+
+    <!-- CASADO -->
+    <span class="mb-4">
+      <mat-checkbox formControlName="married" class="full-width"
+        >Casado</mat-checkbox
+      >
+    </span>
+
+    <!-- DIRECCION DOMICILIO -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Dirección domicilio</mat-label>
+      <input matInput formControlName="address" />
+      <mat-error *ngIf="userForm.controls['address'].hasError('required')">
+        El campo es requerido.
+      </mat-error>
+    </mat-form-field>
+  </div>
+</ng-template>
+
+<ng-template #footerContent>
+  <app-button
+    modal-footer
+    [data]="isEdit ? buttonUpdate : buttonSave"
+    (click)="onSubmit()"
+  ></app-button>
+</ng-template>
