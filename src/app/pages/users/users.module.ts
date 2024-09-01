@@ -14,6 +14,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from 'src/app/services/tocken.interceptor';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { ButtonModule } from 'src/app/components/button/button.module';
 
 
 const routes: Routes = [
@@ -23,7 +24,7 @@ const routes: Routes = [
   },
 ];
 @NgModule({
-  declarations: [UsersComponent, ButtonComponent, ModalComponent],
+  declarations: [UsersComponent, ModalComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
@@ -35,7 +36,8 @@ const routes: Routes = [
     MatTableModule,
     MatIconModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    ButtonModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },

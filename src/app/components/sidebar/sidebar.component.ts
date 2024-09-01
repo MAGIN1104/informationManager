@@ -1,29 +1,40 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Route, Router } from '@angular/router';
+import { MenuInterface } from 'src/app/interfaces/Menu.interface';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
 })
-export class SidebarComponent {
-  listMenu: Array<any> = [
+export class SidebarComponent implements OnInit {
+  listMenu: Array<MenuInterface> = [
     {
       id: '1',
-      title: 'Gestion Usuarios',
+      title: 'Usuarios',
       route: '/admin/users',
+      icon: 'users',
     },
     {
       id: '2',
-      title: 'Gestion Grupos',
+      title: 'Grupos',
       route: '/admin/groups',
+      icon: 'groups',
     },
   ];
 
-  constructor(public _router: Router) {}
+  constructor(
+    private _menuSharedService: SharedService,
+    public _router: Router
+  ) {}
+  ngOnInit(): void {
+    const menu = this.listMenu.find((data) => data.route === this._router.url);
+    this._menuSharedService.menuObservableData = menu!.title;
+  }
 
-  navigateTo(path: string) {
-    console.log('NAVEGAR A ' + path);
+  navigateTo(path: string, title: string) {
     this._router.navigateByUrl(path);
+    this._menuSharedService.menuObservableData = title;
   }
 }

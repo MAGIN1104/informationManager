@@ -1,8 +1,11 @@
+@import url("../../../assets/scss/custom/header.scss");
+
 h1,
 h2,
 h3 {
   color: var(--bg-primary);
 }
+
 .title {
   margin-top: 20px;
   display: flex;
@@ -15,12 +18,7 @@ h3 {
   justify-content: center;
   padding-top: 10px;
 }
-.header_body {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-  width: 100%;
-}
+
 .centered-table .mat-cell,
 .centered-table .mat-header-cell {
   justify-content: center;

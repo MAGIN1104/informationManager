@@ -1,16 +1,18 @@
 <div class="side-bar">
   <div class="title">
     <svg><use xlink:href="assets/icons/icons.svg#pug"></use></svg>
-    <span>MANAGER</span>
+    <span>PUG ADMIN</span>
   </div>
   <div class="options">
     <div
       *ngFor="let menu of listMenu; let i = index"
       class="menu"
       [ngClass]="{ selected: _router.url === menu.route }"
-      (click)="navigateTo(menu.route)"
+      (click)="navigateTo(menu.route, menu.title)"
     >
-      <svg><use xlink:href="assets/icons/icons.svg#users"></use></svg>
+      <svg>
+        <use [attr.xlink:href]="'assets/icons/icons.svg#' + menu.icon"></use>
+      </svg>
       <span>{{ menu.title }}</span>
     </div>
   </div>
