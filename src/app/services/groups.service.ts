@@ -25,4 +25,8 @@ export class GroupsService {
       )
     );
   }
+
+  async createGroup(group: Group): Promise<void> {
+    await this.groupsCollection.add(group);
+  }
 }

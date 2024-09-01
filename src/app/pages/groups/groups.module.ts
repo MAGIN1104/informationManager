@@ -4,7 +4,11 @@ import { RouterModule, Routes } from '@angular/router';
 import { GroupsComponent } from './groups.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from 'src/app/services/tocken.interceptor';
-import { MatCardModule } from '@angular/material/card';
+import { CardModule } from 'src/app/components/card/card.module';
+import { ButtonModule } from 'src/app/components/button/button.module';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
 
 const routes: Routes = [
   {
@@ -17,11 +21,15 @@ const routes: Routes = [
   declarations: [GroupsComponent],
   imports: [
     CommonModule,
-    MatCardModule,
+    CardModule,
     RouterModule.forChild(routes),
+    ButtonModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatInputModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
   ],
 })
-export class GroupsModule { }
+export class GroupsModule {}

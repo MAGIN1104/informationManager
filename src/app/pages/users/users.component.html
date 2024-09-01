@@ -1,7 +1,7 @@
 <div class="container">
-  <div class="title"><h1>Gestión de Usuarios</h1></div>
+  <div class="title"><h1>{{ title$ | async }}</h1></div>
 
-  <div class="header_body">
+  <div class="header_button_create">
     <div></div>
     <app-button
       [data]="dataButton"

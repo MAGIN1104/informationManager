@@ -2,12 +2,11 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   MatDialog,
-  MatDialogConfig,
   MatDialogRef,
 } from '@angular/material/dialog';
 import { Timestamp } from 'firebase/firestore';
 import { ToastrService } from 'ngx-toastr';
-import { Observable, config, map, pipe, take, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { ModalComponent } from 'src/app/components/modal/modal.component';
 import { Size } from 'src/app/enums/button.enum';
 import {
@@ -16,6 +15,7 @@ import {
   UserSave,
 } from 'src/app/interfaces/User.interface';
 import { Button } from 'src/app/interfaces/button.interface';
+import { SharedService } from 'src/app/services/shared.service';
 import { UsersService } from 'src/app/services/users.service';
 
 @Component({
@@ -37,7 +37,7 @@ export class UsersComponent {
     size: Size.Medium,
   };
   buttonUpdate: Button = {
-    label: 'Guardar Usuario',
+    label: 'Actualizar Usuario',
     size: Size.Medium,
   };
   users: User[] = [];
@@ -55,7 +55,11 @@ export class UsersComponent {
 
   dialogRef?: MatDialogRef<ModalComponent, any>;
 
+  title$: Observable<string> | undefined;
+
+
   constructor(
+    private _sharedService: SharedService,
     private usersService: UsersService,
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
@@ -64,6 +68,7 @@ export class UsersComponent {
     this.form();
   }
   ngOnInit() {
+    this.title$ = this._sharedService.menuObservable
     this.loadUsers();
   }
 

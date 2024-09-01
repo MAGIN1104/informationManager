@@ -10,8 +10,6 @@ export class AuthService {
   constructor(public auth0: Auth0Service, private router: Router) {} // Inyectar Router
 
   login(): boolean {
-    /* const fakeToken = 'fake-jwt-token';
-    localStorage.setItem('token', fakeToken);*/
     this.auth0.loginWithRedirect();
     return true;
   }
@@ -23,8 +21,6 @@ export class AuthService {
 
   isAuthenticated(): Observable<boolean> {
     return this.auth0.isAuthenticated$;
-    /*if (!localStorage.getItem('token')) return of(false);
-    return of(true);*/
   }
 
   userInfo(): Observable<User | undefined | null> {
