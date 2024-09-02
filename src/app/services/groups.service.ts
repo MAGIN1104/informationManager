@@ -29,4 +29,9 @@ export class GroupsService {
   async createGroup(group: Group): Promise<void> {
     await this.groupsCollection.add(group);
   }
+
+  async updateUser(group: Partial<Group>): Promise<void> {
+    const userRef = this.groupsCollection.doc(group.id!);
+    await userRef.update(group);
+  }
 }

@@ -29,16 +29,16 @@ export class UsersService {
   
 
   async addUser(newUser: UserSave): Promise<void> {
-    await this.usersCollection.add(newUser); // Use add method
+    await this.usersCollection.add(newUser);
   }
 
   async updateUser(user: Partial<UserSave>): Promise<void> {
-    const userRef = this.usersCollection.doc(user.id!); // Reference using AngularFirestoreCollection
-    await userRef.update(user); // Update with AngularFirestoreCollection
+    const userRef = this.usersCollection.doc(user.id!);
+    await userRef.update(user);
   }
 
   async deleteUser(user: Partial<UserSave>): Promise<void> {
     const userRef = this.usersCollection.doc(user.id!);
-    await userRef.delete(); // Delete with AngularFirestoreCollection
+    await userRef.delete();
   }
 }

@@ -12,13 +12,25 @@ export class SidebarComponent implements OnInit {
   listMenu: Array<MenuInterface> = [
     {
       id: '1',
-      title: 'Usuarios',
+      title: 'Gestion de Usuarios',
       route: '/admin/users',
       icon: 'users',
     },
     {
       id: '2',
-      title: 'Grupos',
+      title: 'Celulas Familiares',
+      route: '/admin/groups',
+      icon: 'groups',
+    },
+    {
+      id: '3',
+      title: 'Grupos Generales',
+      route: '/admin/groups',
+      icon: 'groups',
+    },
+    {
+      id: '4',
+      title: 'Roles',
       route: '/admin/groups',
       icon: 'groups',
     },

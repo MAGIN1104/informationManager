@@ -5,7 +5,9 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable, tap } from 'rxjs';
 import { ModalComponent } from 'src/app/components/modal/modal.component';
 import { Size } from 'src/app/enums/button.enum';
+import { CardOptionEnum } from 'src/app/enums/card.enum';
 import { Button } from 'src/app/interfaces/button.interface';
+import { CardInterface } from 'src/app/interfaces/Card.interface';
 import { Group } from 'src/app/interfaces/Groups.interface';
 import { GroupsService } from 'src/app/services/groups.service';
 import { SharedService } from 'src/app/services/shared.service';
@@ -122,7 +124,24 @@ export class GroupsComponent {
         console.error('Error al añadir Grupo:', error);
       });
   }
-  update(id: string) {}
+  update(id: string) {
+    console.log(id);
+    const group = {
+      ...this.formGroup.value,
+      id,
+    };
+    this._groupsService
+      .updateUser(group)
+      .then(() => {
+        this.alertSucces('ACTUALIZADO', 'Grupo actualizado correctamente');
+        console.log('Se actualizo con éxito');
+        this.closeModal();
+      })
+      .catch((error) => {
+        this.alertError('Error', 'No se actualizo el Grupo');
+        console.error('Error al actualizar Grupo:', error);
+      });
+  }
 
   alertSucces(titel: string, subTitle: string) {
     this.toastr.success(subTitle, titel);
@@ -132,5 +151,20 @@ export class GroupsComponent {
   }
   closeModal() {
     this.dialogRef!.close();
+  }
+  action(action: CardInterface) {
+    switch (action!.option) {
+      case CardOptionEnum.Edit:
+        this.isEdit = true;
+        this.openModal(action);
+        break;
+      case CardOptionEnum.Delete:
+        break;
+      case CardOptionEnum.More:
+        break;
+      default:
+        break;
+    }
+    console.log(action);
   }
 }

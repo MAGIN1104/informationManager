@@ -1,6 +1,25 @@
-<mat-card appearance="outlined" class="card" appearance="outlined">
-  <mat-card-header>
-    <mat-card-title>{{ title }}</mat-card-title>
-    <mat-card-subtitle>{{ description }}</mat-card-subtitle>
-  </mat-card-header>
-</mat-card>
+<div class="card-container">
+  <mat-card appearance="outlined" class="card" (click)="emitData(CardOptionEnum.More)">
+    <mat-card-header>
+      <mat-card-title>{{ card.title }}</mat-card-title>
+      <mat-card-subtitle *ngIf="card.description">{{ card.description }}</mat-card-subtitle>
+    </mat-card-header>
+  </mat-card>
+  <div class="btn-options">
+    <button
+      mat-icon-button
+      [matMenuTriggerFor]="menu"
+      aria-label="Example icon-button with a menu"
+    >
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="emitData(CardOptionEnum.Edit)">
+        <span>Editar</span>
+      </button>
+      <button mat-menu-item (click)="emitData(CardOptionEnum.Delete)">
+        <span>Eliminar</span>
+      </button>
+    </mat-menu>
+  </div>
+</div>
