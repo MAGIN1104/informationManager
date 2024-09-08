@@ -1,7 +1,11 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Route, Router } from '@angular/router';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { MenuInterface } from 'src/app/interfaces/Menu.interface';
+import { AuthService } from 'src/app/services/auth.service';
 import { SharedService } from 'src/app/services/shared.service';
+import { environment } from 'src/environment/environment';
 
 @Component({
   selector: 'app-sidebar',
@@ -18,19 +22,19 @@ export class SidebarComponent implements OnInit {
     },
     {
       id: '2',
-      title: 'Celulas Familiares',
+      title: 'Roles',
       route: '/admin/groups',
-      icon: 'groups',
+      icon: 'user_role',
     },
     {
       id: '3',
-      title: 'Grupos Generales',
+      title: 'Celulas Familiares',
       route: '/admin/groups',
-      icon: 'groups',
+      icon: 'family',
     },
     {
       id: '4',
-      title: 'Roles',
+      title: 'Grupos Generales',
       route: '/admin/groups',
       icon: 'groups',
     },
@@ -38,11 +42,20 @@ export class SidebarComponent implements OnInit {
 
   constructor(
     private _menuSharedService: SharedService,
-    public _router: Router
+    public _router: Router,
+    private _http: HttpClient,
+    private _authService: AuthService
   ) {}
   ngOnInit(): void {
+    this.userInfo();
     const menu = this.listMenu.find((data) => data.route === this._router.url);
     this._menuSharedService.menuObservableData = menu!.title;
+  }
+
+  userInfo() {
+    this._authService.userInfo().subscribe((x) => {
+      console.log(x);
+    });
   }
 
   navigateTo(path: string, title: string) {

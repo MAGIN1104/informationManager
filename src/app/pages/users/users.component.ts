@@ -1,9 +1,6 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {
-  MatDialog,
-  MatDialogRef,
-} from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Timestamp } from 'firebase/firestore';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, tap } from 'rxjs';
@@ -25,12 +22,17 @@ import { UsersService } from 'src/app/services/users.service';
 })
 export class UsersComponent {
   @ViewChild(ModalComponent) modalComponent!: ModalComponent;
+  @ViewChild('bodyBirthDate') bodyModalBirthDateTemplate!: TemplateRef<any>;
   @ViewChild('bodyContent') bodyModalTemplate!: TemplateRef<any>;
   @ViewChild('footerContent') footerModalTemplate!: TemplateRef<any>;
   users$: Observable<UserResponse[]> | undefined;
   dataButton: Button = {
     icon: 'users',
     label: 'Crear',
+  };
+  birthdateButton: Button = {
+    icon: 'calendar',
+    label: 'Cumpleaño semanal',
   };
   buttonSave: Button = {
     label: 'Guardar Usuario',
@@ -57,7 +59,6 @@ export class UsersComponent {
 
   title$: Observable<string> | undefined;
 
-
   constructor(
     private _sharedService: SharedService,
     private usersService: UsersService,
@@ -68,7 +69,7 @@ export class UsersComponent {
     this.form();
   }
   ngOnInit() {
-    this.title$ = this._sharedService.menuObservable
+    this.title$ = this._sharedService.menuObservable;
     this.loadUsers();
   }
 
@@ -92,6 +93,21 @@ export class UsersComponent {
 
     return new Date(year, month, day);
   }
+
+  openModelBirthDate() {
+    this.getBirthDate();
+    const config = {
+      titleModal: 'LISTA DE CUMPLEAÑEROS',
+      templateBody: this.bodyModalBirthDateTemplate,
+      templateFooter: null,
+    };
+    this.dialogRef = this.dialog.open(ModalComponent, {
+      width: '480px',
+      height: '500px',
+      data: config,
+    });
+  }
+
   openModal(data?: UserResponse) {
     if (data) {
       this.userId = data.id;
@@ -125,6 +141,7 @@ export class UsersComponent {
   closeModal() {
     this.dialogRef!.close();
   }
+
   loadUsers() {
     this.users$ = this.usersService.getUsers().pipe(
       tap((users) => {
@@ -151,7 +168,6 @@ export class UsersComponent {
   onSubmit() {
     if (this.userForm.invalid) {
       this.userForm.markAllAsTouched();
-      console.log('Form is not valid');
     }
     !this.userId ? this.save() : this.update(this.userId);
   }
@@ -177,6 +193,7 @@ export class UsersComponent {
   alertSucces(titel: string, subTitle: string) {
     this.toastr.success(subTitle, titel);
   }
+
   alertError(titel: string, subTitle: string) {
     this.toastr.error(subTitle, titel);
   }
@@ -211,5 +228,15 @@ export class UsersComponent {
         this.alertError('ERROR', 'Error al eliminar usuario');
         console.error('Error al eliminar usuario:', error);
       });
+  }
+
+  userList: User[] = [];
+  getBirthDate() {
+    this.usersService.getBirthdaysForThisWeek().subscribe((users) => {
+      this.userList = users.map((user) => ({
+        ...user,
+        birthDate: this.convertTimestampToDateStr(user.birthDate),
+      }));
+    });
   }
 }

@@ -1,13 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router'; // Importar Router
-import { Observable, of, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { AuthService as Auth0Service, User } from '@auth0/auth0-angular';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(public auth0: Auth0Service, private router: Router) {} // Inyectar Router
+  constructor(
+    public auth0: Auth0Service,
+    private _http: HttpClient,
+    private router: Router
+  ) {}
 
   login(): boolean {
     this.auth0.loginWithRedirect();
@@ -26,4 +31,5 @@ export class AuthService {
   userInfo(): Observable<User | undefined | null> {
     return this.auth0.user$;
   }
+
 }
