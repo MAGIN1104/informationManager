@@ -51,6 +51,7 @@ export class UsersService {
     const endOfWeek = startOfWeek.clone().endOf('isoWeek');
 
     const startMonthDay = startOfWeek.format('MM-DD');
+    
     const endMonthDay = endOfWeek.format('MM-DD');
 
     return this.usersCollection.snapshotChanges().pipe(
