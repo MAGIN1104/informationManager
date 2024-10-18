@@ -5,8 +5,9 @@
   display: flex;
   flex-wrap: nowrap;
   justify-content: center;
-  min-width: 120px; /* Cambiado a min-width */
-  max-width: calc(120px + 10px); /* Ajuste para permitir crecimiento */
+  min-width: 120px;
+  padding: 0 10px;
+  //max-width: calc(120px + 10px);
   height: 45px;
   background-color: var(--bg-primary);
   color: var(--bg-white);

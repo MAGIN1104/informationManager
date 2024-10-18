@@ -1,8 +1,14 @@
 <div class="container">
-  <div class="title"><h1>{{ title$ | async }}</h1></div>
+  <div class="title">
+    <h1>{{ title$ | async }}</h1>
+  </div>
 
   <div class="header_button_create">
-    <div></div>
+    <app-button
+      class="mx-1"
+      [data]="birthdateButton"
+      (click)="openModelBirthDate()"
+    ></app-button>
     <app-button
       [data]="dataButton"
       (click)="openModal(); isEdit = false"
@@ -136,6 +142,20 @@
         El campo es requerido.
       </mat-error>
     </mat-form-field>
+
+    <!-- CELULA -->
+    <mat-form-field *ngIf="this.groups$ | async as groupList" appearance="outline" class="full-width">
+      <mat-label>Grupo</mat-label>
+      <mat-select formControlName="idGroup">
+        @for (option of groupList; track option) {
+        <mat-option [value]="option.idGroup">{{ option.title }}</mat-option>
+        }
+      </mat-select>
+      <mat-error *ngIf="userForm.controls['idGroup'].hasError('required')">
+        El campo es requerido.
+      </mat-error>
+    </mat-form-field>
+
   </div>
 </ng-template>
 
@@ -145,4 +165,25 @@
     [data]="isEdit ? buttonUpdate : buttonSave"
     (click)="onSubmit()"
   ></app-button>
+</ng-template>
+
+<ng-template #bodyBirthDate>
+  <div class="empty" *ngIf="userList.length == 0">
+    <svg>
+      <use [attr.xlink:href]="'assets/icons/icons.svg#no-data'"></use>
+    </svg>
+    <span>NO HAY CUMPLEAÑEROS ESTA SEMANA</span>
+  </div>
+
+  <div class="itemList" *ngFor="let item of userList">
+    <div class="item">
+      <span>
+        {{ item.name + " " + item.firstLastName + " " + item.secondLastName }}
+      </span>
+      <span>
+        {{ item.birthDate }}
+      </span>
+    </div>
+    <hr />
+  </div>
 </ng-template>

@@ -25,3 +25,22 @@ h3 {
   display: flex;
   align-items: center;
 }
+
+.itemList {
+  width: inherit;
+}
+.item {
+  display: flex;
+  width: inherit;
+  justify-content: space-between;
+}
+
+.empty{
+  width: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  span{
+    margin-top: 1rem;
+  }
+}

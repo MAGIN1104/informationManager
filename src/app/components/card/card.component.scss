@@ -1,10 +1,21 @@
 .card {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 15rem;
-    height: 10rem;
-    text-align: center;
-    box-sizing: border-box;
-  }
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 15rem;
+  height: 10rem;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.card-container {
+  position: relative;
+  display: inline-block;
+}
+
+.btn-options {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1;
+}

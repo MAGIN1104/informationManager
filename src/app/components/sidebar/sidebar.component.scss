@@ -27,7 +27,8 @@
   }
   padding: 20px 0px;
   width: 270px;
-  height: 100vh;
+  height: 95vh;
+  margin-top: 15px;
   background-color: var(--bg-primary);
   .options {
     margin: 10px 0px;
@@ -53,4 +54,5 @@
       background: rgba(255, 255, 255, 0.2);
     }
   }
+  border-radius: 0 20px 20px 0;
 }

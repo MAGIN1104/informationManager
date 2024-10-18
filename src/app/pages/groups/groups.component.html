@@ -7,7 +7,7 @@
     <div></div>
     <app-button
       [data]="dataButton"
-      (click)="openModal(); isEdit = false"
+      (click)="openModal(null); isEdit = false"
     ></app-button>
   </div>
 
@@ -18,8 +18,8 @@
   >
     <app-card
       *ngFor="let group of groups"
-      [title]="group.title"
-      [description]="group.description"
+      [card]="group"
+      (cardData)="action($event)"
     >
     </app-card>
   </div>
@@ -27,12 +27,11 @@
 
 <!-- MODAL -->
 <ng-template #bodyContent>
-
   <div class="form-group" [formGroup]="formGroup">
     <!-- TITULO -->
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Titulo</mat-label>
-      <input matInput formControlName="title" required="true" />
+      <input matInput formControlName="title" required="true" readonly="true"/>
       <mat-error *ngIf="formGroup.controls['title'].hasError('required')">
         El campo es requerido.
       </mat-error>
@@ -45,9 +44,7 @@
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Descripcion</mat-label>
       <input matInput formControlName="description" required="true" />
-      <mat-error
-        *ngIf="formGroup.controls['description'].hasError('required')"
-      >
+      <mat-error *ngIf="formGroup.controls['description'].hasError('required')">
         El campo es requerido.
       </mat-error>
       <mat-error
@@ -56,7 +53,6 @@
         La description debe tener mas de 5 carateres
       </mat-error>
     </mat-form-field>
-
   </div>
 </ng-template>
 
@@ -66,4 +62,17 @@
     [data]="isEdit ? buttonUpdate : buttonSave"
     (click)="onSubmit()"
   ></app-button>
+</ng-template>
+
+<!-- MODAL USERS -->
+<ng-template #bodyContentUser>
+  <div *ngIf="users$ | async as users">
+    <div *ngFor="let user of users">
+      <span
+        >{{ user.name }} {{ user.firstLastName }}
+        {{ user.secondLastName }}</span
+      >
+      <hr />
+    </div>
+  </div>
 </ng-template>

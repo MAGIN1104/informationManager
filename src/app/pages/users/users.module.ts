@@ -15,7 +15,7 @@ import { TokenInterceptor } from 'src/app/services/tocken.interceptor';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { ButtonModule } from 'src/app/components/button/button.module';
-
+import { MatSelectModule } from '@angular/material/select';
 
 const routes: Routes = [
   {
@@ -37,7 +37,8 @@ const routes: Routes = [
     MatIconModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    ButtonModule
+    ButtonModule,
+    MatSelectModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
