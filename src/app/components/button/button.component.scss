@@ -1,0 +1,40 @@
+.button {
+  cursor: pointer;
+  align-items: center;
+  border-radius: 10px;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  min-width: 120px;
+  padding: 0 10px;
+  //max-width: calc(120px + 10px);
+  height: 45px;
+  background-color: var(--bg-primary);
+  color: var(--bg-white);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.button:hover {
+  background-color: rgba(var(--bg-primary-rgb), 0.8);
+}
+
+.sm {
+  min-width: 120px;
+  max-width: calc(120px + 10px); /* Permite crecimiento hasta 130px */
+}
+.md {
+  min-width: 200px;
+  max-width: calc(200px + 10px); /* Permite crecimiento hasta 210px */
+}
+.lg {
+  min-width: 300px;
+  max-width: calc(300px + 10px); /* Permite crecimiento hasta 310px */
+}
+
+svg {
+  fill: var(--bg-white);
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}

@@ -1,0 +1,58 @@
+.side-bar {
+  h1,
+  h2,
+  h3,
+  h5,
+  p,
+  span {
+    color: var(--bg-white);
+  }
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  .title {
+    height: 56px;
+    color: var(--bg-gold);
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    width: inherit;
+    font-size: 1.1em;
+    font-weight: bold;
+    padding: 10px;
+    svg {
+      width: 50px;
+      height: 50px;
+    }
+  }
+  padding: 20px 0px;
+  width: 270px;
+  height: 95vh;
+  margin-top: 15px;
+  background-color: var(--bg-primary);
+  .options {
+    margin: 10px 0px;
+    .menu {
+      display: flex;
+      align-items: center;
+      svg {
+        fill: white;
+        width: 25px;
+        height: 25px;
+      }
+      span {
+        margin-left: 5px;
+      }
+      cursor: pointer;
+      padding: 5px 5px 5px 15px;
+
+    }
+    .selected{
+      background: rgba(255, 255, 255, 0.4);
+    }
+    .menu:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+  }
+  border-radius: 0 20px 20px 0;
+}

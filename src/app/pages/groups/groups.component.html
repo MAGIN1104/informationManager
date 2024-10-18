@@ -1,0 +1,78 @@
+<div class="container">
+  <div class="title">
+    <h1>{{ title$ | async }}</h1>
+  </div>
+
+  <div class="header_button_create">
+    <div></div>
+    <app-button
+      [data]="dataButton"
+      (click)="openModal(null); isEdit = false"
+    ></app-button>
+  </div>
+
+  <div
+    *ngIf="groups$ | async as groups"
+    class="cards-container"
+    style="padding: 1em"
+  >
+    <app-card
+      *ngFor="let group of groups"
+      [card]="group"
+      (cardData)="action($event)"
+    >
+    </app-card>
+  </div>
+</div>
+
+<!-- MODAL -->
+<ng-template #bodyContent>
+  <div class="form-group" [formGroup]="formGroup">
+    <!-- TITULO -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Titulo</mat-label>
+      <input matInput formControlName="title" required="true" readonly="true"/>
+      <mat-error *ngIf="formGroup.controls['title'].hasError('required')">
+        El campo es requerido.
+      </mat-error>
+      <mat-error *ngIf="formGroup.controls['title'].hasError('minlength')">
+        El titulo debe tener mas de 5 carateres
+      </mat-error>
+    </mat-form-field>
+
+    <!-- DECRIPCIPCION -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Descripcion</mat-label>
+      <input matInput formControlName="description" required="true" />
+      <mat-error *ngIf="formGroup.controls['description'].hasError('required')">
+        El campo es requerido.
+      </mat-error>
+      <mat-error
+        *ngIf="formGroup.controls['description'].hasError('minlength')"
+      >
+        La description debe tener mas de 5 carateres
+      </mat-error>
+    </mat-form-field>
+  </div>
+</ng-template>
+
+<ng-template #footerContent>
+  <app-button
+    modal-footer
+    [data]="isEdit ? buttonUpdate : buttonSave"
+    (click)="onSubmit()"
+  ></app-button>
+</ng-template>
+
+<!-- MODAL USERS -->
+<ng-template #bodyContentUser>
+  <div *ngIf="users$ | async as users">
+    <div *ngFor="let user of users">
+      <span
+        >{{ user.name }} {{ user.firstLastName }}
+        {{ user.secondLastName }}</span
+      >
+      <hr />
+    </div>
+  </div>
+</ng-template>

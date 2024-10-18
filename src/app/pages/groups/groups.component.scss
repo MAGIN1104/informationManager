@@ -1,0 +1,24 @@
+@import url("../../../assets/scss/custom/header.scss");
+
+.cards-container {
+  display: flex;
+  //flex-direction: row-reverse;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: flex-start;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.title {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 10px;
+}

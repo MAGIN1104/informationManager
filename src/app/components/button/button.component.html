@@ -1,0 +1,15 @@
+<div
+  class="button"
+  [ngClass]="{
+    sm: data.size === Size.Small,
+    md: data.size === Size.Medium,
+    lg: data.size === Size.Large
+  }"
+>
+  <div *ngIf="data.icon" class="icon">
+    <svg>
+      <use [attr.xlink:href]="'assets/icons/icons.svg#' + data.icon"></use>
+    </svg>
+  </div>
+  <div class="label">{{ data.label }}</div>
+</div>
