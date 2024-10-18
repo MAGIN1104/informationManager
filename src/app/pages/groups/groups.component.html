@@ -7,7 +7,7 @@
     <div></div>
     <app-button
       [data]="dataButton"
-      (click)="openModal(); isEdit = false"
+      (click)="openModal(null); isEdit = false"
     ></app-button>
   </div>
 
@@ -31,7 +31,7 @@
     <!-- TITULO -->
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Titulo</mat-label>
-      <input matInput formControlName="title" required="true" />
+      <input matInput formControlName="title" required="true" readonly="true"/>
       <mat-error *ngIf="formGroup.controls['title'].hasError('required')">
         El campo es requerido.
       </mat-error>
@@ -62,4 +62,17 @@
     [data]="isEdit ? buttonUpdate : buttonSave"
     (click)="onSubmit()"
   ></app-button>
+</ng-template>
+
+<!-- MODAL USERS -->
+<ng-template #bodyContentUser>
+  <div *ngIf="users$ | async as users">
+    <div *ngFor="let user of users">
+      <span
+        >{{ user.name }} {{ user.firstLastName }}
+        {{ user.secondLastName }}</span
+      >
+      <hr />
+    </div>
+  </div>
 </ng-template>

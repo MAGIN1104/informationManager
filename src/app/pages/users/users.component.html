@@ -142,6 +142,20 @@
         El campo es requerido.
       </mat-error>
     </mat-form-field>
+
+    <!-- CELULA -->
+    <mat-form-field *ngIf="this.groups$ | async as groupList" appearance="outline" class="full-width">
+      <mat-label>Grupo</mat-label>
+      <mat-select formControlName="idGroup">
+        @for (option of groupList; track option) {
+        <mat-option [value]="option.idGroup">{{ option.title }}</mat-option>
+        }
+      </mat-select>
+      <mat-error *ngIf="userForm.controls['idGroup'].hasError('required')">
+        El campo es requerido.
+      </mat-error>
+    </mat-form-field>
+
   </div>
 </ng-template>
 
@@ -154,10 +168,7 @@
 </ng-template>
 
 <ng-template #bodyBirthDate>
-  <div
-    class="empty"
-    *ngIf="userList.length == 0"
-  >
+  <div class="empty" *ngIf="userList.length == 0">
     <svg>
       <use [attr.xlink:href]="'assets/icons/icons.svg#no-data'"></use>
     </svg>

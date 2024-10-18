@@ -6,12 +6,14 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable, tap } from 'rxjs';
 import { ModalComponent } from 'src/app/components/modal/modal.component';
 import { Size } from 'src/app/enums/button.enum';
+import { Group } from 'src/app/interfaces/Groups.interface';
 import {
   User,
   UserResponse,
   UserSave,
 } from 'src/app/interfaces/User.interface';
 import { Button } from 'src/app/interfaces/button.interface';
+import { GroupsService } from 'src/app/services/groups.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { UsersService } from 'src/app/services/users.service';
 
@@ -25,7 +27,11 @@ export class UsersComponent {
   @ViewChild('bodyBirthDate') bodyModalBirthDateTemplate!: TemplateRef<any>;
   @ViewChild('bodyContent') bodyModalTemplate!: TemplateRef<any>;
   @ViewChild('footerContent') footerModalTemplate!: TemplateRef<any>;
+
   users$: Observable<UserResponse[]> | undefined;
+  groups$: Observable<Group[]> | undefined;
+  title$: Observable<string> | undefined;
+
   dataButton: Button = {
     icon: 'users',
     label: 'Crear',
@@ -51,17 +57,16 @@ export class UsersComponent {
     'birthDate',
     'actions',
   ];
-
+  groups: Group[] = [];
   userForm!: FormGroup;
   isEdit: boolean = false;
 
   dialogRef?: MatDialogRef<ModalComponent, any>;
 
-  title$: Observable<string> | undefined;
-
   constructor(
     private _sharedService: SharedService,
-    private usersService: UsersService,
+    private _usersService: UsersService,
+    private _groupsService: GroupsService,
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
     private dialog: MatDialog
@@ -79,10 +84,11 @@ export class UsersComponent {
       firstLastName: ['', [Validators.required, Validators.minLength(2)]],
       secondLastName: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.email]],
-      age: ['', [Validators.required]],
+      age: ['', []],
       birthDate: ['', [Validators.required]],
       married: [false, [Validators.required]],
       address: ['', [Validators.required]],
+      idGroup: ['', [Validators.required]],
     });
   }
   convertStringToDate(dateString: string): Date {
@@ -109,6 +115,7 @@ export class UsersComponent {
   }
 
   openModal(data?: UserResponse) {
+    this.loadGroups();
     if (data) {
       this.userId = data.id;
       this.userForm.patchValue(data!);
@@ -143,12 +150,21 @@ export class UsersComponent {
   }
 
   loadUsers() {
-    this.users$ = this.usersService.getUsers().pipe(
+    this.users$ = this._usersService.getUsers().pipe(
       tap((users) => {
         this.users = users.map((user) => ({
           ...user,
           birthDate: this.convertTimestampToDateStr(user.birthDate),
         }));
+      })
+    );
+  }
+
+  loadGroups() {
+    this.groups$ = this._groupsService.getGroups().pipe(
+      tap((group) => {
+        this.groups = { ...group };
+        console.log(this.groups);
       })
     );
   }
@@ -166,19 +182,17 @@ export class UsersComponent {
   }
 
   onSubmit() {
-    if (this.userForm.invalid) {
-      this.userForm.markAllAsTouched();
+    this.userForm.value
+    if (this.userForm.valid) {
+      this.userForm.get('age')?.setValue(this.calculateAge(this.userForm.get('birthDate')?.value))
+      !this.userId ? this.save() : this.update(this.userId);
     }
-    !this.userId ? this.save() : this.update(this.userId);
+    this.userForm.markAllAsTouched();
   }
 
   save() {
-    const newUser: UserSave = {
-      ...this.userForm.value,
-    };
-
-    this.usersService
-      .addUser(newUser)
+    this._usersService
+      .addUser(this.userForm.value)
       .then(() => {
         this.alertSucces('CREADO', 'Usuario creado correctamente');
         console.log('Usuario añadido con éxito');
@@ -204,7 +218,7 @@ export class UsersComponent {
       id: idUser,
     };
     console.log('ACTUALIZAR USUARIO: ', newUser);
-    this.usersService
+    this._usersService
       .updateUser(newUser)
       .then(() => {
         console.log('Usuario actualizado con éxito');
@@ -218,7 +232,7 @@ export class UsersComponent {
   }
 
   delete(data?: UserResponse) {
-    this.usersService
+    this._usersService
       .deleteUser(data!)
       .then(() => {
         this.alertSucces('ELIMINADO', 'Usuario eliminado correctamente');
@@ -232,11 +246,22 @@ export class UsersComponent {
 
   userList: User[] = [];
   getBirthDate() {
-    this.usersService.getBirthdaysForThisWeek().subscribe((users) => {
+    this._usersService.getBirthdaysForThisWeek().subscribe((users) => {
       this.userList = users.map((user) => ({
         ...user,
         birthDate: this.convertTimestampToDateStr(user.birthDate),
       }));
     });
+  }
+
+  calculateAge(birthDate: Date): number {
+    const today = new Date();
+    const birthDateObj = new Date(birthDate);
+    let age = today.getFullYear() - birthDateObj.getFullYear();
+    const monthDiff = today.getMonth() - birthDateObj.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDateObj.getDate())) {
+      age--;
+    }
+    return age;
   }
 }

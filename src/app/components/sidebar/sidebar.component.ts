@@ -23,7 +23,7 @@ export class SidebarComponent implements OnInit {
 
   listMenuAssistance: Array<MenuInterface> = [
     { title: 'Gestion de Usuarios', route: '/admin/users', icon: 'users' },
-    { title: 'Roles', route: '/admin/groups', icon: 'user_role' },
+    { title: 'Celulas Familiares', route: '/admin/groups', icon: 'user_role' },
   ];
 
   assistant: string = '';
@@ -62,7 +62,7 @@ export class SidebarComponent implements OnInit {
     console.log('ROLE ', role);
     switch (role[0].role) {
       case 'Au30V95puKmkvNP9FUCV':
-        this.listMenu = this.listMenuAdmin;
+        this.listMenu = this.listMenuAssistance;
         break;
       case 'Q72THz2zZva7xWxAUiSY':
         this.listMenu = this.listMenuAssistance;
