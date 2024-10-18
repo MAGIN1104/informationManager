@@ -47,7 +47,7 @@ export class GroupsComponent implements OnDestroy {
   ];
 
   dataButton: Button = {
-    icon: 'groups',
+    icon: 'add',
     label: 'Crear',
   };
 
